@@ -21,6 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// --- UploadFile ---
 type UploadFileRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Request:
@@ -107,6 +108,7 @@ type FileMetadata struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filename      string                 `protobuf:"bytes,1,opt,name=filename,proto3" json:"filename,omitempty"`
 	ContentType   string                 `protobuf:"bytes,2,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
+	UploadedBy    string                 `protobuf:"bytes,3,opt,name=uploaded_by,json=uploadedBy,proto3" json:"uploaded_by,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -151,6 +153,13 @@ func (x *FileMetadata) GetFilename() string {
 func (x *FileMetadata) GetContentType() string {
 	if x != nil {
 		return x.ContentType
+	}
+	return ""
+}
+
+func (x *FileMetadata) GetUploadedBy() string {
+	if x != nil {
+		return x.UploadedBy
 	}
 	return ""
 }
@@ -207,6 +216,7 @@ func (x *UploadFileResponse) GetUrl() string {
 	return ""
 }
 
+// --- GetFileURL ---
 type GetFileURLRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
@@ -254,6 +264,8 @@ func (x *GetFileURLRequest) GetFileId() string {
 type GetFileURLResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	Filename      string                 `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`
+	ContentType   string                 `protobuf:"bytes,3,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -295,6 +307,21 @@ func (x *GetFileURLResponse) GetUrl() string {
 	return ""
 }
 
+func (x *GetFileURLResponse) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *GetFileURLResponse) GetContentType() string {
+	if x != nil {
+		return x.ContentType
+	}
+	return ""
+}
+
+// --- DeleteFile ---
 type DeleteFileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        string                 `protobuf:"bytes,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
@@ -392,17 +419,21 @@ const file_file_v1_file_proto_rawDesc = "" +
 	"\bmetadata\x18\x01 \x01(\v2\x15.file.v1.FileMetadataH\x00R\bmetadata\x12\x1f\n" +
 	"\n" +
 	"chunk_data\x18\x02 \x01(\fH\x00R\tchunkDataB\t\n" +
-	"\arequest\"M\n" +
+	"\arequest\"n\n" +
 	"\fFileMetadata\x12\x1a\n" +
 	"\bfilename\x18\x01 \x01(\tR\bfilename\x12!\n" +
-	"\fcontent_type\x18\x02 \x01(\tR\vcontentType\"?\n" +
+	"\fcontent_type\x18\x02 \x01(\tR\vcontentType\x12\x1f\n" +
+	"\vuploaded_by\x18\x03 \x01(\tR\n" +
+	"uploadedBy\"?\n" +
 	"\x12UploadFileResponse\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\x12\x10\n" +
 	"\x03url\x18\x02 \x01(\tR\x03url\",\n" +
 	"\x11GetFileURLRequest\x12\x17\n" +
-	"\afile_id\x18\x01 \x01(\tR\x06fileId\"&\n" +
+	"\afile_id\x18\x01 \x01(\tR\x06fileId\"e\n" +
 	"\x12GetFileURLResponse\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03url\",\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x1a\n" +
+	"\bfilename\x18\x02 \x01(\tR\bfilename\x12!\n" +
+	"\fcontent_type\x18\x03 \x01(\tR\vcontentType\",\n" +
 	"\x11DeleteFileRequest\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\".\n" +
 	"\x12DeleteFileResponse\x12\x18\n" +
